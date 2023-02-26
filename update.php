@@ -1,74 +1,4 @@
-<?php
-$servername = "localhost";
-$username = "root";
-$password = "root";
-$message = "";
-try
-{
-    $conn = new PDO("mysql:host=$servername;dbname=patient", $username, $password);
-    // set the PDO error mode to exception
-    // $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-     //echo "Connected successfully"; 
-}
-catch(PDOException $e)
-{
-    echo "Connection failed: " . $e->getMessage();
 
-}
-
-//update
-
-if(isset($_POST['Send']))
-{
-    $sql="Update user set nom_user=:nom_user,
-    prenom_user=:prenom_user, tel_user=:tel_user, adresse=:adresse where id_user=:id_user";
-    $update=$conn->prepare($sql);
-    $update->bindParam(":nom_user",$_POST['name']);
-    $update->bindParam(":prenom_user",$_POST['first_name']);
-    $update->bindParam(":tel_user",$_POST['tel']);
-    $update->bindParam(":adresse",$_POST['address']);
-    $update->bindParam(":id_user",$_GET['id_user']);
-
-    if($update->execute())
-    {
-        $message="updated";
-       // header("location:list.php");
-    }
-
-}
-//printing of different details
-$data=$conn->query("select id_user,nom_user,prenom_user,tel_user,Adresse from user where id_user=".$_GET['id_user'],PDO::FETCH_ASSOC);
-
-/*  foreach ($data->fetch() as $key => $value) {
-    echo $value." - ";
- } */
- $nom="";
- $prenom="";
- $tel="";
- $adresse="";
-
-
- if ($data) {
-	// show the publishers
-	foreach ($data as $d) {
-		$nom=$d['nom_user'];
-		$prenom=$d['prenom_user'];
-		$tel=$d['tel_user'];
-        $adresse=$d['Adresse'];
-
-	}
-}
-
- //$aff=$data->fetchAll();
- //var_dump($aff);
-
-/* $data->bindColumn('id_user',$id);
-$data->bindColumn('nom_user',$nom);
-$data->bindColumn('prenom_user',$prenom);
-$data->bindColumn('tel_user',$tel);
-$data->bindColumn('Adresse',$adr);*/
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -140,46 +70,23 @@ $data->bindColumn('Adresse',$adr);*/
         <div class="image">
             <img class="image_acc" src="img/software_update_by_gocmen_gettyimages-1146311500_2400x1600-100852481-large copy.jpg" alt="">
         </div>
+        <h3 style="text-align: center;" >Update User</h3>
+        <?php
+         require "connexion_DB.php";
+         $sql="SELECT * from user where id_user=".$_GET['id_user'];
+         $data=$conn->query($sql,PDO::FETCH_ASSOC);
+         $donnee=$data->fetch();
+         //var_dump($donnee);
+        ?>
         <form action="" method="post">
-            <input class="champ" type="text" name="name" id="" placeholder="write your name" value="<?php echo $nom; ?>" required>
-            <input class="champ" type="text" name="first_name" id="" placeholder="write your first_name" value="<?php echo $prenom; ?>" required>
-            <input class="champ" type="text" name="tel" id="" placeholder="write your phone number" value="<?php echo $tel; ?>" required>
-            <input class="champ" type="text" name="address" id="" placeholder="write your Address" value="<?php echo $adresse; ?>" required>
-            <input class="btn" type="submit" name="Send" value="Send">
+            <input class="champ" type="hidden" id="id" placeholder="write your name" value="<?= $donnee['id_user']?>" required>
+            <input class="champ" type="text" id="name" placeholder="write your name" value="<?= $donnee['nom_user']?>" required>
+            <input class="champ" type="text" id="first_name" placeholder="write your first_name" value="<?= $donnee['prenom_user'] ?>" required>
+            <input class="champ" type="text" id="tel" placeholder="write your phone number" value="<?= $donnee['tel_user'] ?>" required>
+            <input class="champ" type="text" id="Address" placeholder="write your Address" value="<?= $donnee['adresse'] ?>" required>
+            <button class="btn" type="button" id="Send" value="Send" onclick="send('update')" >Update</button>
         </form>
     </div>
+    <?php require 'script.php' ?>
 </body>
 </html>
-<?php if($message!=""){ ?>
-    <script>
-    //     Swal.fire(
-    //         'Good job!',
-    //         'You clicked the button!',
-    //         'success'
-    //     )
-
-            const myTimeout = setTimeout(succed, 500);
-
-            function succed() {
-                Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: 'Your data has been saved !!!',
-            showConfirmButton: false,
-            timer: 2000,
-            },
-            )           
-         }
-         const yourTimeout = setTimeout(Tsucced, 3000);
-
-            function Tsucced() {
-           window.location.href="list.php"          
-         }
-
-
-
-     </script>
-     
-<?php } ?>
-
-

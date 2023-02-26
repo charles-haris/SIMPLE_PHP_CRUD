@@ -1,53 +1,4 @@
-<?php
-$servername = "localhost";
-$username = "root";
-$password = "root";
-$message="";
-try
-{
-    $conn = new PDO("mysql:host=$servername;dbname=patient", $username, $password);
-    // set the PDO error mode to exception
-    // $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-     //echo "Connected successfully"; 
-}
-catch(PDOException $e)
-{
-    echo "Connection failed: " . $e->getMessage();
 
-}
-
-if(isset($_GET['id_user'])){
-    $verify_data=$conn->query("select id_user from user where id_user=".$_GET['id_user'],PDO::FETCH_BOUND);
-    $compte=$verify_data->rowCount();
-
-    if($compte>0){
-        $sql="Delete from user where id_user=".$_GET['id_user'];
-        $del=$conn->query($sql);
-        if($del->execute()){
-            $message="deleted";
-        }
-    } 
-}
-
-$data=$conn->query("select id_user,nom_user,prenom_user,tel_user,Adresse from user",PDO::FETCH_BOUND);
-
-/*  foreach ($data->fetch() as $key => $value) {
-    echo $value." - ";
- } */
-
- $compte=$data->rowCount();
-
- $data->bindColumn('id_user',$id);
-$data->bindColumn('nom_user',$nom);
-$data->bindColumn('prenom_user',$prenom);
-$data->bindColumn('tel_user',$tel);
-$data->bindColumn('Adresse',$adr);
-
-
-
-
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -109,7 +60,7 @@ $data->bindColumn('Adresse',$adr);
         border-radius: 5px;
         text-align: center;
     }
-    a{
+    .a,a{
         text-decoration: none;
         padding: 7px 20px;
         margin-left: 5px;
@@ -117,9 +68,10 @@ $data->bindColumn('Adresse',$adr);
         background-color: dodgerblue;
         color: black;
     }
-    a:hover{
+    .a,a:hover{
         background-color: deepskyblue;
     }
+
     
 </style>
 <body>
@@ -127,42 +79,32 @@ $data->bindColumn('Adresse',$adr);
         <div class="image">
             <img class="image_acc" src="img/149071.png" alt="">
         </div>
-        <div class="liste">
+        <div class="liste" style="background-color: gray;">
             Nom | Prenom | Tel | Adresse
         </div>
-      <?php   while ($data->fetch()){ ?>
-        <div class="liste">
-            <?php echo "$nom | $prenom | $tel | $adr" ?>
-            <a href="list.php?id_user=<?php echo $id; ?>" style="float:right; color:white; background-color:red;">Del</a> 
-            <a href="update.php?id_user=<?php echo $id; ?>" style="float:right; color:white; background-color:green; marging-right:2px;">Upd</a>
+        <?php
+            require "connexion_DB.php";
+            $sql="select id_user,nom_user, prenom_user, tel_user, adresse from user";
+            $data=$conn->query($sql,PDO::FETCH_ASSOC);
+            $donnee=$data->fetchAll();
+            $cpt=$data->rowCount();
+            
+            //var_dump($donnee);
+            for($i=0;$i<$cpt;$i++){
+        ?>
+         <div class="liste">
+                <?= $donnee[$i]['nom_user'] ?> | <?= $donnee[$i]['prenom_user'] ?> | <?= $donnee[$i]['tel_user'] ?> | <?= $donnee[$i]['adresse'] ?>
+                <button class="a" onclick="send(<?= $donnee[$i]['id_user'] ?>)" style="float:right; color:white; background-color:red;">Del</button> 
+                <a href="update.php?id_user=<?= $donnee[$i]['id_user'] ?>" style="float:right; color:white; background-color:green; marging-right:2px;">Upd</a>
 
         </div>
-        <?php }?>
+
+      <?php } ?>
         <div class="liste_link">
-            <a href="index.html">Home</a>
+            <a href="index.php">Home</a>
 
         </div>
     </div>
+    <?php require "script.php"; ?>
 </body>
 </html>
-<?php if($message!=""){ ?>
-    <script>
-    //     Swal.fire(
-    //         'Good job!',
-    //         'You clicked the button!',
-    //         'success'
-    //     )
-    
-            Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: 'User deleted !!!',
-            showConfirmButton: false,
-            timer: 2000,
-            },
-            )
-
-
-     </script>
-     
-<?php } ?>

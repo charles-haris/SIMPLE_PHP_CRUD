@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>index</title>
+    <title>Add User</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
@@ -68,13 +68,15 @@
         <div class="image">
             <img class="image_acc" src="img/149071.png" alt="">
         </div>
-        <form action="submit.php" method="post">
-            <input class="champ" type="text" name="name" id="" placeholder="write your name" required>
-            <input class="champ" type="text" name="first_name" id="" placeholder="write your first_name" required>
-            <input class="champ" type="text" name="tel" id="" placeholder="write your phone number" required>
-            <input class="champ" type="text" name="address" id="" placeholder="write your Address" required>
-            <input class="btn" type="submit" value="Send">
+        <h3 style="text-align: center;" >Add User</h3>
+        <form autocomplete="off" action="" method="post">
+            <input class="champ" type="text" id="name" placeholder="write your name" required>
+            <input class="champ" type="text" id="first_name" placeholder="write your first_name" required>
+            <input class="champ" type="text" id="tel" placeholder="write your phone number" required>
+            <input class="champ" type="text" id="Address" placeholder="write your Address" required>
+            <button class="btn" type="button" onclick="send('insert')">Insert</button>
         </form>
     </div>
+    <?php require 'script.php' ?>
 </body>
 </html>
