@@ -17,7 +17,6 @@ function insert(){
     $prenom=$_POST['first_name1'];
     $tel=$_POST['tel1'];
     $adresse=$_POST['Address1'];
-    //$id=$_POST['id1'];
     $sql=" INSERT INTO user (nom_user, prenom_user, tel_user, adresse) values (:nom_user, :prenom_user, :tel_user, :adresse)";
 
     $insert = $conn->prepare($sql);
