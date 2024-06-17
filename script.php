@@ -11,7 +11,7 @@
                     name1 : $('#name').val(),
                     first_name1 : $('#first_name').val() ,
                     tel1 : $('#tel').val() ,
-                    Address1 : $('#Address').val() ,
+                    Address1 : $('#Address').val() 
                 };
 
                 $.ajax({
