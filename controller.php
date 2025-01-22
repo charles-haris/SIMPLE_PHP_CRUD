@@ -11,6 +11,7 @@ if(isset($_POST['action1'])){
     }
 }
 
+//this is the insert function
 function insert(){
     global $conn;
     $nom=$_POST['name1'];
@@ -24,7 +25,6 @@ function insert(){
     $insert->bindParam(":prenom_user",$prenom);
     $insert->bindParam(":tel_user",$tel);
     $insert->bindParam(":adresse",$adresse);
-    //$insert->bindParam(":id_user",$id);
 
 
     if($insert->execute()){
@@ -36,6 +36,7 @@ function insert(){
 
 }
 
+//this is the update function
 function update(){
     global $conn;
 
@@ -62,6 +63,8 @@ function update(){
     }
 
 }
+
+//this is the delete function
 function delete(){
     global $conn;
     $sql="Delete from user where id_user=".$_POST['action1'];
