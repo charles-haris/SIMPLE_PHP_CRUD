@@ -89,7 +89,6 @@
             $donnee=$data->fetchAll();
             $cpt=$data->rowCount();
             
-            //var_dump($donnee);
             for($i=0;$i<$cpt;$i++){
         ?>
          <div class="liste">
